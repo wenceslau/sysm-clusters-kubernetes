@@ -1,0 +1,43 @@
+# API version being used
+apiVersion: v1
+# Defines the type of Kubernetes object (in this case, a Pod)
+kind: Pod
+metadata:
+  # Name of the Pod
+  name: mypod1
+  # Labels to help categorize and select this Pod
+  labels:
+    app: web      # Label to indicate the app category
+    version: blue  # Label to indicate the version of the app
+
+spec:
+  # List of containers inside the Pod (here, there is only one container)
+  containers:
+    - name: web  # Name of the container
+      # The container image to be used (pulled from a registry)
+      image: kubedevio/web-color:blue
+      ports:
+        # The port exposed by the container
+        - containerPort: 80
+          name: http  # Name given to this port
+          protocol: TCP  # Protocol used by the port
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod2
+  labels:
+    app: web
+    version: green
+spec:
+  containers:
+    - name: web
+      image: kubedevio/web-color:green
+      ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+
+

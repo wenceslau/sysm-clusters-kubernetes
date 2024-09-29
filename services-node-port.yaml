@@ -1,0 +1,37 @@
+apiVersion: apps/v1       # API version for ReplicaSet (using 'apps/v1' for this type of object)
+kind: Deployment          # Kind of Kubernetes object, which is a Deployment
+metadata:
+  name: mydeployment      # Name of the Deployment
+spec:
+  replicas: 2             # Number of Pod replicas to maintain
+  selector:               # Selector to match the labels of Pods that this ReplicaSet manages
+    matchLabels:
+      app: web            # Pods with this label will be managed by this ReplicaSet
+  template:               # Template defines the Pod that will be created by the ReplicaSet
+    metadata:
+      labels:             # Labels applied to the Pods created by this template
+        app: web          # Labels the Pod with 'app: web'
+    spec:
+      containers:         # List of containers for the Pod (this one has a single container)
+        - name: web       # Name of the container
+          image: kubedevio/web-color:green          # Image used for the container (version 'blue')
+          ports:
+            - containerPort: 80                    # Exposes port 80 in the container
+              name: http                           # Port named 'http'
+              protocol: TCP                        # Using TCP protocol for communication
+
+---
+apiVersion: v1       # API version for ReplicaSet (using 'apps/v1' for this type of object)
+kind: Service
+metadata:
+    name: myservicenodeport      # Name of the Service
+spec:
+    selector:               # Selector to match the labels of Pods that this ReplicaSet manages
+        app: web            # Pods with this label will be managed by this ReplicaSet
+    ports:
+        - port: 80          # Define which port the service will listen on. The service will expose this port
+          targetPort: 80    # POD Port, the service will forward traffic to this port. This is the port exposed by the POD
+          name: http        # Name of the port  exposed by the service
+          protocol: TCP     # Protocol used by the port, in this case, TCP
+          nodePort: 30000   # Port on the Node that will be exposed to the outside world
+    type: NodePort          # Type of service. NodePort exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created
