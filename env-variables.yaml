@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: app-configuration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-configuration
+  template:
+    metadata:
+      labels:
+          app: app-configuration
+    spec:
+      containers:
+        - name: app-configuration
+          image: kubedevio/app-variaveis-ambiente:v1
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_NAME
+              value: "app-configuration"
+            - name: APP_VERSION
+              value: "1.0.0"
+            - name: APP_AUTHOR
+              value: "Neto"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-configuration
+spec:
+    selector:
+        app: app-configuration
+    ports:
+      - protocol: TCP
+        name: http
+        port: 80
+        targetPort: 3000
+        nodePort: 30000
+    type: NodePort

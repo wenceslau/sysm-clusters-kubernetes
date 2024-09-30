@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: app-config-valor
+data:
+    APP_NAME_CONFIG: "app-configuration (ConfigMap) Valor"
+    APP_VERSION_CONFIG: "1.0.3"
+    APP_AUTHOR_CONFIG: "Neto (ConfigMap) Valor"
