@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / # This is the path to rewrite
+spec:
+  ingressClassName: nginx # To get this class, run kubectl get ingressclass, you will which class your provider is using
+  rules:
+    - http:
+        paths:
+          - path: /blue
+            pathType: Prefix
+            backend:
+              service:
+                name: web-blue
+                port:
+                  number: 80  # This is the port to use with the external IP or domain
+          - path: /green # /green/xpto will not be accepted, the path must be exactly /green
+            pathType: Exact
+            backend:
+              service:
+                name: web-green
+                port:
+                  number: 80  # This is the port to use with the external IP or domain
